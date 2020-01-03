@@ -78,7 +78,7 @@ class Person:
 			i += 1
 
 	def choose_target(self, enemies):
-		i = 0
+		i = 1
 		print("\n" + bcolors.FAIL + bcolors.BOLD + "      TARGET:" + bcolors.ENDC)
 		for enemy in enemies:
 			if enemy.get_hp() != 0:
@@ -116,8 +116,7 @@ class Person:
 			current_hp = hp_string
 
 		print("                            __________________________________________________")
-		print(bcolors.BOLD + self.name + "      " +
-			  current_hp + " |" + bcolors.FAIL + hp_bar + bcolors.ENDC + "|")
+		print(bcolors.BOLD + self.name + "      " + current_hp + " |" + bcolors.FAIL + hp_bar + bcolors.ENDC + "|")
 
 	def get_stats(self):
 		hp_bar = ""
@@ -172,4 +171,16 @@ class Person:
 		print(bcolors.BOLD + self.name + "      " +
 			current_hp + " |" + bcolors.OKGREEN + hp_bar + bcolors.ENDC +"|      " +
 			current_mp + " |" + bcolors.OKBLUE + mp_bar + bcolors.ENDC + "|")
+
+	def choose_enemy_spell(self):
+		magic_choice = random.randrange(0, len(self.magic))
+		spell = self.magic[magic_choice]
+		magic_dmg = spell.generate_damage()
+
+		pct = self.hp / self.maxhp * 100
+
+		if self.mp < spell.cost or spell.type == "white" and pct > 50:
+			self.choose_enemy_spell()
+		else:
+			return spell , magic_dmg
 
